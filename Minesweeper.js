@@ -68,43 +68,22 @@ class MinesweeperBoard {
 }
   }
 
-// WRITERS
-function writeAboutEasy(){
-  document.getElementById("middleBox").innerHTML =
-  `
-  <button type="button" class='gameButtons' onmouseover='writeAboutEasy()' onclick="givenDifficulty('Easy')">Click Me!</button> <br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutMedium()' onclick="test()">Medium</button><br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutHard()' onclick="test()">Hard</button><br>
-  <button type="button" class='gameButtons' onclick="givenDifficulty('Easy')">Click Me!</button>
-  <br>
-  The board will be 8x8 (64 squares) and there will be 10 mines.
-  `;
-}
-function writeAboutMedium(){
-  document.getElementById("middleBox").innerHTML =
-  `
-  <button type="button" class='gameButtons' onmouseover='writeAboutEasy()' onclick="givenDifficulty('Easy')">Click Me!</button> <br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutMedium()' onclick="test()">Medium</button><br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutHard()' onclick="test()">Hard</button><br>
-  <button type="button" class='gameButtons' onclick="givenDifficulty('Easy')">Click Me!</button>
-  <br>
-  The board will be 16x16 (256 squares) and there will be 40 mines.
-  `;
-}
-function writeAboutHard(){
-  document.getElementById("middleBox").innerHTML =
-  `
-  <button type="button" class='gameButtons' onmouseover='writeAboutEasy()' onclick="givenDifficulty('Easy')">Click Me!</button> <br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutMedium()' onclick="test()">Medium</button><br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutHard()' onclick="test()">Hard</button><br>
-  <button type="button" class='gameButtons' onclick="givenDifficulty('Easy')">Click Me!</button>
-  <br>
-  The board will be 22x22 (484 squares) and there will be 99 mines.
-  `;
-}
 // Testing
 function test(){
   console.log("Hello.");
+}
+//Writers
+function writeToRulesBox(diff){
+  console.log(diff + " written");
+  if (diff == 0){ //EZ
+    document.getElementById('ruleText').innerHTML = "There will be an 8x8 board with 10 mines."
+  }
+  else if (diff == 1){ //Med
+    document.getElementById('ruleText').innerHTML = "There will be an 16x16 board with 40 mines."
+  }
+  else if (diff == 2){ //Hard
+    document.getElementById('ruleText').innerHTML = "There will be an 22x22 board with 99 mines."
+  }
 }
 
 // Progression
@@ -115,24 +94,23 @@ function givenGameMinesweeper(){
   //convert buttons to difficulty buttons
   document.getElementById("middleBox").innerHTML =
   `
-  <button type="button" class='gameButtons' onclick="givenDifficulty('Easy')">Click Me!</button> <br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutMedium()' onclick="test()">Medium</button><br>
-  <button type="button" class='gameButtons' onmouseover='writeAboutHard()' onclick="test()">Hard</button><br>
-  <button type="button" class='gameButtons' onclick="givenDifficulty('Easy')">Click Me!</button>
+  <button type="button" class='gameButtons' onmouseover="writeToRulesBox(0)" onclick="givenDifficulty(0)">Easy</button> <br>
+  <button type="button" class='gameButtons' onmouseover="writeToRulesBox(1)" onclick="givenDifficulty(1)">Medium</button><br>
+  <button type="button" class='gameButtons' onmouseover="writeToRulesBox(2)" onclick="givenDifficulty(2)">Hard</button><br>
   <br>
-  The difficulty you select determines the size of the board and amount of mines.
+  <div id="ruleText">The difficulty you select determines the size of the board and amount of mines.</div>
   `;
 }
 function givenDifficulty(diff){
   console.log(diff + " chosen.")
   var gameBoard = new MinesweeperBoard();
-  if (diff === "easy"){
+  if (diff == 0){//EZ
 
   }
-  else if (diff === "medium"){
+  else if (diff == 1){//MED
 
   }
-  else if (diff === "hard"){
+  else if (diff == 2){ //HARD
 
   }
 }
