@@ -70,7 +70,10 @@ class MinesweeperBoard {
   drawBoard() { //draw  this.mineboard
     console.log("Size: " + this.size);
     if (this.size == 64){
-
+      document.getElementById("middleBox").innerHTML =
+      `
+      <div class='boardSweeperEZ'></div>
+      `
     }
     else if (this.size == 256){
 
