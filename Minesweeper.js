@@ -70,10 +70,12 @@ class MinesweeperBoard {
   drawBoard() { //draw  this.mineboard
     console.log("Size: " + this.size);
     if (this.size == 64){
-      document.getElementById("middleBox").innerHTML =
-      `
-      <div class='boardSweeperEZ'></div>
-      `
+      let toUse = "<div class='boardSweeperEZ'>";
+      for (let i = 0; i < this.size; i++){
+          toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+      }
+      toUse += '</div>';
+      document.getElementById("middleBox").innerHTML = toUse;
     }
     else if (this.size == 256){
 
@@ -127,4 +129,14 @@ function givenDifficulty(diff) { //given the difficulty, create the board
     window.gameBoard.generateBoard(22, 22, 99);
   }
   window.gameBoard.drawBoard();
+}
+function detectClick(event,id){
+  //alert("You pressed button: " + event.button + " on " + id);
+  // 0 is left click, 2 is right click
+  if (event.button == 0){
+    alert("You pressed a left click on " + id);
+  }
+  else if (event.button == 2){
+    alert("You pressed a right click on " + id);
+  }
 }
