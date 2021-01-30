@@ -32,12 +32,12 @@ class MinesweeperBoard {
   uncover(space) {
     // edit the mines board to uncover the space, if the space wasn't already uncovered
     this.mineCovered[space] = 1;     //convert it to visible
-    if (){// if mine
-
-    }
-    else{// wow, not mine
-
-    }
+    // if (){// if mine
+    //
+    // }
+    // else{// wow, not mine
+    //
+    // }
   }
   uncoverNumbers(space){
 
@@ -53,6 +53,7 @@ class MinesweeperBoard {
   }
   generateBoard(l, w, m) {
     this.size = l * w;
+    this.length = l;
     this.mineboard = []; // what the player sees if uncovered
     // 0 == blank, 1-8 numbers, 9 for mine
     this.mineCovered = []; //what the player sees
@@ -75,23 +76,27 @@ class MinesweeperBoard {
       //console.log(minePlaceHolder[i]);
       this.mineboard[minePlaceHolder[i]] = 9;
     }
+    this.convertBoardToNumbers();
   }
   convertBoardToNumbers(){
     //Once there are mines in our board, we can now convert the adjacent spaces to uncoverNumbers
-    for (int i = 0; i < this.size; i++){
+    let l = this.length;
+    for (let i = 0; i < this.size; i++){
       if (this.mineboard[i] == 9){} //skip, is mine
-      else{
+      else{ // check each rule seperately for errors
         let mines = 0;
-        //top left
-        //top
-        //top right
-        //left
-        //right
-        //bottom left
-        //bottom
-        //bottom right
+        mines += ((i % l != 0) && (i > l) && (this.mineboard[i  - l - 1] == 9) ? 1 : 0 );//top left
+        mines += ((i > l) && (this.mineboard[i-l] == 9) ? 1 : 0);//top
+        mines += ((i > l) && (i % l != (l - 1)) && (this.mineboard[i - l + 1] == 9) ? 1 : 0);//top right
+        mines += ((i % l != 0) && (this.mineboard[i-1] == 9) ? 1 : 0);//left
+        mines += ((i % l != (l - 1)) && (this.mineboard[i+1] == 9) ? 1 : 0);//right
+        mines += ((i % l != 0) && (this.mineboard[i-1] == 9) && (i < this.size - l) ? 1: 0);//bottom left
+        mines += ( (i < (this.size - l)) && (this.mineboard [i + l] == 9) ? 1: 0);//bottom
+        mines += ( (i % l != (l - 1) ) && (i < this.size - l) && (this.mineboard [i + l + 1] == 9) ? 1: 0);//bottom right
+        this.mineboard[i] = mines;
       }
     }
+    console.log(this.mineboard);
   }
   drawBoard() { //draw  this.mineboard
     //console.log("Size: " + this.size);
