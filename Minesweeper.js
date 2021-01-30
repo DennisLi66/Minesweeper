@@ -30,7 +30,7 @@ class MinesweeperBoard {
     return false;
   }
   uncover(space) {
-    //return true if bomb, false if safe
+    // edit the mines board to uncover the space, if the space wasn't already uncovered
     return false;
   }
   isVictory() {
@@ -68,7 +68,7 @@ class MinesweeperBoard {
     }
   }
   drawBoard() { //draw  this.mineboard
-    console.log("Size: " + this.size);
+    //console.log("Size: " + this.size);
     if (this.size == 64){
       let toUse = "<div class='boardSweeperEZ'>";
       let visualBoard = this.getVisualBoard();
@@ -90,6 +90,9 @@ class MinesweeperBoard {
 
     }
   }
+  drawNonInteractiveBoard(){ //draw a board that shows up on game loss
+
+  }
 }
 // Testing
 function test() {
@@ -107,7 +110,7 @@ function writeToRulesBox(diff) {
   }
 }
 // Progression
-function givenCustomMines(size, mines) {} ///WRITE MORE LATER
+function givenCustomMines(size, mines) {} ///WRITE MORE LATER - think of board correlations?
 function givenGameMinesweeper() {
   console.log("Minesweeper was selected.");
   test();
@@ -140,22 +143,31 @@ function detectClick(event,id){
   //alert("You pressed button: " + event.button + " on " + id);
   // 0 is left click, 2 is right click
   if (event.button == 0){
-    alert("You pressed a left click on " + id);
+    // alert("You pressed a left click on " + id);
+    let visual = window.gameBoard.getVisualBoard()[id];
+    if (visual == 1){ //if already uncovered
+      console.log("Player tried to uncover an already uncovered space.");
+      //add oof sound effect
+    }
+    else{ //uncover
+
+    }
   }
   else if (event.button == 2){
     //alert("You pressed a right click on " + id);
-    //check if space is marked
-    if (window.gameBoard.getVisualBoard()[id] == 0){ //covered - so mark it
+    //check if space is marked already
+    let covered = window.gameBoard.getVisualBoard()[id];
+    if (covered == 0){ //covered - so mark it
       window.gameBoard.mark(id);
       //play positive ding sound
       console.log("Space " + id + " was marked.");
       window.gameBoard.drawBoard();
     }
-    else if (window.gameBoard.getVisualBoard()[id] == 1){ //uncovered - say it can't be marked? play an error sound? do nothing?
+    else if (covered == 1){ //uncovered - say it can't be marked? play an error sound? do nothing?
       console.log("Player tried to mark tile " + id + ", but that tile was uncovered.")
       //play oof sound
     }
-    else if (window.gameBoard.getVisualBoard()[id] == 2){ //already marked - so unmark it
+    else if (covered == 2){ //already marked - so unmark it
       window.gameBoard.unmark(id);
       //play positive ding sound?
       console.log("Space " + id + " was unmarked.");
