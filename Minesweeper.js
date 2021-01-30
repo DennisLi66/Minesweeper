@@ -71,8 +71,14 @@ class MinesweeperBoard {
     console.log("Size: " + this.size);
     if (this.size == 64){
       let toUse = "<div class='boardSweeperEZ'>";
+      let visualBoard = this.getVisualBoard();
       for (let i = 0; i < this.size; i++){
-          toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          if (visualBoard[i] == 0){//covered and unmarked
+            toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          }
+          else if (visualBoard[i] == 2){//covered and marked
+            toUse += "<div class='boardEZFlag' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          }
       }
       toUse += '</div>';
       document.getElementById("middleBox").innerHTML = toUse;
@@ -137,6 +143,23 @@ function detectClick(event,id){
     alert("You pressed a left click on " + id);
   }
   else if (event.button == 2){
-    alert("You pressed a right click on " + id);
+    //alert("You pressed a right click on " + id);
+    //check if space is marked
+    if (window.gameBoard.getVisualBoard()[id] == 0){ //covered - so mark it
+      window.gameBoard.mark(id);
+      //play positive ding sound
+      console.log("Space " + id + " was marked.");
+      window.gameBoard.drawBoard();
+    }
+    else if (window.gameBoard.getVisualBoard()[id] == 1){ //uncovered - say it can't be marked? play an error sound? do nothing?
+      console.log("Player tried to mark tile " + id + ", but that tile was uncovered.")
+      //play oof sound
+    }
+    else if (window.gameBoard.getVisualBoard()[id] == 2){ //already marked - so unmark it
+      window.gameBoard.unmark(id);
+      //play positive ding sound?
+      console.log("Space " + id + " was unmarked.");
+      window.gameBoard.drawBoard();
+    }
   }
 }
