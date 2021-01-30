@@ -31,11 +31,20 @@ class MinesweeperBoard {
   }
   uncover(space) {
     // edit the mines board to uncover the space, if the space wasn't already uncovered
-    return false;
+    this.mineCovered[space] = 1;     //convert it to visible
+    if (){// if mine
+
+    }
+    else{// wow, not mine
+
+    }
+  }
+  uncoverNumbers(space){
+
   }
   isVictory() {
     for (i = 0; i < this.size; i++) {
-      if (this.mineboard[i] != X && this.mineCovered[i] === 0) { //if the item is not a mine but is still covered return false
+      if (this.mineboard[i] != 9 && this.mineCovered[i] === 0) { //if the item is not a mine but is still covered return false
         return false;
       }
     }
@@ -45,7 +54,7 @@ class MinesweeperBoard {
   generateBoard(l, w, m) {
     this.size = l * w;
     this.mineboard = []; // what the player sees if uncovered
-    // 0 == blank, 1-8 numbers, X for mine
+    // 0 == blank, 1-8 numbers, 9 for mine
     this.mineCovered = []; //what the player sees
     // 0 == covered, 1 == uncovered, 2 == marked;
     var minePlaceHolder = [];
@@ -64,7 +73,24 @@ class MinesweeperBoard {
     // the first m values become mines in mineboard
     for (let i = 0; i < m; i++) {
       //console.log(minePlaceHolder[i]);
-      this.mineboard[minePlaceHolder[i]] = 'X';
+      this.mineboard[minePlaceHolder[i]] = 9;
+    }
+  }
+  convertBoardToNumbers(){
+    //Once there are mines in our board, we can now convert the adjacent spaces to uncoverNumbers
+    for (int i = 0; i < this.size; i++){
+      if (this.mineboard[i] == 9){} //skip, is mine
+      else{
+        let mines = 0;
+        //top left
+        //top
+        //top right
+        //left
+        //right
+        //bottom left
+        //bottom
+        //bottom right
+      }
     }
   }
   drawBoard() { //draw  this.mineboard
@@ -149,8 +175,13 @@ function detectClick(event,id){
       console.log("Player tried to uncover an already uncovered space.");
       //add oof sound effect
     }
+    else if (visual == 2){
+      console.log("Player tried to uncover a space they had already marked.")
+      // add oof sound effect
+    }
     else{ //uncover
-
+      console.log("Uncovering space: " + id);
+      window.gameBoard.uncover(id);
     }
   }
   else if (event.button == 2){

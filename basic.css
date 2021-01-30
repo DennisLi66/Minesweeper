@@ -50,3 +50,11 @@ body{
   width: 71px;
   height: 71px;
 }
+.boardEZMine{
+  border: 1px solid black;
+  background-color: black;
+  float:left;
+  /* board  - 2 / 8   good number would be 590?*/
+  width: 71px;
+  height: 71px;
+}
