@@ -85,14 +85,14 @@ class MinesweeperBoard {
       if (this.mineboard[i] == 9){} //skip, is mine
       else{ // check each rule seperately for errors
         let mines = 0;
-        mines += ((i % l != 0) && (i > l) && (this.mineboard[i  - l - 1] == 9) ? 1 : 0 );//top left
-        mines += ((i > l) && (this.mineboard[i-l] == 9) ? 1 : 0);//top
-        mines += ((i > l) && (i % l != (l - 1)) && (this.mineboard[i - l + 1] == 9) ? 1 : 0);//top right
+        mines += ((i % l != 0) && (i >= l) && (this.mineboard[i  - l - 1] == 9) ? 1 : 0 );//top left
+        mines += ((i >= l) && (this.mineboard[i-l] == 9) ? 1 : 0);//top
+        mines += ((i >= l) && (i % l != (l - 1)) && (this.mineboard[i - l + 1] == 9) ? 1 : 0);//top right
         mines += ((i % l != 0) && (this.mineboard[i-1] == 9) ? 1 : 0);//left
         mines += ((i % l != (l - 1)) && (this.mineboard[i+1] == 9) ? 1 : 0);//right
-        mines += ((i % l != 0) && (this.mineboard[i-1] == 9) && (i < this.size - l) ? 1: 0);//bottom left
+        mines += ( (i < (this.size - l)) && (i % l != 0) && (this.mineboard[i+l-1] == 9) ? 1: 0);//bottom left
         mines += ( (i < (this.size - l)) && (this.mineboard [i + l] == 9) ? 1: 0);//bottom
-        mines += ( (i % l != (l - 1) ) && (i < this.size - l) && (this.mineboard [i + l + 1] == 9) ? 1: 0);//bottom right
+        mines += ( (i < (this.size - l)) && (i % l != (l - 1) ) && (this.mineboard [i + l + 1] == 9) ? 1: 0);//bottom right
         this.mineboard[i] = mines;
       }
     }
