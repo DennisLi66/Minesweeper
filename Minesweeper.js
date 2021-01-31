@@ -31,16 +31,39 @@ class MinesweeperBoard {
   }
   uncover(space) {
     // edit the mines board to uncover the space, if the space wasn't already uncovered
-    this.mineCovered[space] = 1;     //convert it to visible
-    // if (){// if mine
-    //
-    // }
-    // else{// wow, not mine
-    //
-    // }
+    if (this.mineboard[space] == 9){// if mine
+      this.mineCovered[space] = 1;     //convert it to visible
+      console.log("The Player has lost.");
+      this.loserScreen();
+    }
+    else{// wow, not mine
+      if (mineboard[space] == 0){ //if zero, cascade
+        this.uncoverZeroes(space);
+        this.drawBoard();
+      }
+      else{ //if number, dont cascade
+        // don't do anything?
+        this.mineCovered[space] = 1;     //convert it to visible
+        this.drawBoard();
+      }
+    }
   }
-  uncoverNumbers(space){
-
+  uncoverZeroes(space){
+    if (this.mineCovered[space] == 1){
+      return;
+    }
+    this.mineCovered[space] = 1;
+    if (this.mineboard[space] == 0){
+      //hand it off to eight spaces around.
+      //top left
+      //top
+      //top right
+      //left
+      //right
+      //bottom left
+      //bottom
+      //bottom right
+    }
   }
   isVictory() {
     for (i = 0; i < this.size; i++) {
@@ -50,6 +73,11 @@ class MinesweeperBoard {
     }
     //return true if all other spaces revealed
     return true;
+  }
+  loserScreen(){
+    //draw noninteractive board
+    //throw up loss banner
+    this.drawNonInteractiveBoard();
   }
   generateBoard(l, w, m) {
     this.size = l * w;
@@ -96,7 +124,7 @@ class MinesweeperBoard {
         this.mineboard[i] = mines;
       }
     }
-    console.log(this.mineboard);
+    //console.log(this.mineboard);
   }
   drawBoard() { //draw  this.mineboard
     //console.log("Size: " + this.size);
