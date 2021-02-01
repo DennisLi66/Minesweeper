@@ -4,6 +4,18 @@
 // add visuals to the functions
 // play sounds on mark, on loss, on victory, on uncover
 // make screen red on loss
+
+
+
+
+///add sounds
+/// add adjustments for all difficulties
+///add mine reveal on loserScreen
+// add victory
+//add restart button
+// add counter for mines and flags
+// return to main menu btn
+
 class MinesweeperBoard {
   constructor() {}
   getMinesBoard() {
@@ -48,12 +60,13 @@ class MinesweeperBoard {
       }
     }
   }
-  uncoverZeroes(space){
-    if (this.mineCovered[space] == 1){
+  uncoverZeroes(i){
+    if (this.mineCovered[i] == 1){
       return;
     }
-    this.mineCovered[space] = 1;
-    if (this.mineboard[space] == 0){
+    this.mineCovered[i] = 1;
+    if (this.mineboard[i] == 0){
+      let l = this.length;
       //hand it off to eight spaces around. copy from numbers
       if ((i % l != 0) && (i >= l)){this.uncoverZeroes(i-l-1)}//top left
       if (i >= l){this.uncoverZeroes(i-l)}//top
@@ -64,7 +77,7 @@ class MinesweeperBoard {
       if (i < (this.size - l)){this.uncoverZeroes(l + i)}//bottom
       if ((i < (this.size - l)) && (i % l != (l - 1))){this.uncoverZeroes(l + i + 1)}//bottom right
     }
-    drawBoard();
+    this.drawBoard();
   }
   isVictory() {
     for (i = 0; i < this.size; i++) {
@@ -137,11 +150,11 @@ class MinesweeperBoard {
             toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
           }
           else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<div class='boardEZFlag' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+            toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i +")' class='square64'>";
           }
           else{
             //has been uncovered
-            toUse += "<img src='mineImages/square" + this.mineboard[i] + ".png' alt='' class='square64'>";
+            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
           }
       }
       toUse += '</div>';
@@ -160,10 +173,14 @@ class MinesweeperBoard {
       let visualBoard = this.getVisualBoard();
       for (let i = 0; i < this.size; i++){
           if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+            toUse += "<div class='boardEZSquare' id='block" + i + "' ></div>";
           }
           else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<div class='boardEZFlag' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+            toUse += "<img src='mineImages/easy/flag.png' class='square64'>";
+          }
+          else{
+            //has been uncovered
+            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
           }
       }
       toUse += '</div>';
