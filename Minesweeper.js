@@ -54,16 +54,17 @@ class MinesweeperBoard {
     }
     this.mineCovered[space] = 1;
     if (this.mineboard[space] == 0){
-      //hand it off to eight spaces around.
-      //top left
-      //top
-      //top right
-      //left
-      //right
-      //bottom left
-      //bottom
-      //bottom right
+      //hand it off to eight spaces around. copy from numbers
+      if ((i % l != 0) && (i >= l)){this.uncoverZeroes(i-l-1)}//top left
+      if (i >= l){this.uncoverZeroes(i-l)}//top
+      if ((i >= l) && (i % l != (l - 1))){this.uncoverZeroes(i-l+1)}//top right
+      if (i % l != 0){this.uncoverZeroes(i-1)}//left
+      if (i % l != (l - 1)){this.uncoverZeroes(i + 1)}//right
+      if ((i < (this.size - l) && (i % l != 0))){this.uncoverZeroes(i + l - 1)}//bottom left
+      if (i < (this.size - l)){this.uncoverZeroes(l + i)}//bottom
+      if ((i < (this.size - l)) && (i % l != (l - 1))){this.uncoverZeroes(l + i + 1)}//bottom right
     }
+    drawBoard();
   }
   isVictory() {
     for (i = 0; i < this.size; i++) {
