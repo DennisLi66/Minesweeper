@@ -3,14 +3,8 @@
 
 // add visuals to the functions
 // play sounds on mark, on loss, on victory, on uncover
-// make screen red on loss
-
-
-
-
-///add sounds
+// make screen red on loss?
 /// add adjustments for all difficulties
-///add mine reveal on loserScreen
 // add victory
 //add restart button
 // add counter for mines and flags
@@ -88,9 +82,20 @@ class MinesweeperBoard {
     //return true if all other spaces revealed
     return true;
   }
+  victoryParty(){
+    //tell the player they've won, do cool effects!
+    console.log("The Player has won!");
+  }
+  revealBoard(){
+    //view the board and reveal mines
+    for (let i = 0; i < this.size; i++){
+      this.mineCovered[i] = 1;
+    }
+  }
   loserScreen(){
     //draw noninteractive board
     //throw up loss banner
+    this.revealBoard();
     this.drawNonInteractiveBoard();
   }
   generateBoard(l, w, m) {
