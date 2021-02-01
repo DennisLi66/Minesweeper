@@ -51,6 +51,9 @@ class MinesweeperBoard {
         // don't do anything?
         this.mineCovered[space] = 1;     //convert it to visible
         this.drawBoard();
+        if (this.isVictory()){
+          victoryParty();
+        }
       }
     }
   }
@@ -72,9 +75,12 @@ class MinesweeperBoard {
       if ((i < (this.size - l)) && (i % l != (l - 1))){this.uncoverZeroes(l + i + 1)}//bottom right
     }
     this.drawBoard();
+    if (this.isVictory()){
+      this.victoryParty();
+    }
   }
   isVictory() {
-    for (i = 0; i < this.size; i++) {
+    for (let i = 0; i < this.size; i++) {
       if (this.mineboard[i] != 9 && this.mineCovered[i] === 0) { //if the item is not a mine but is still covered return false
         return false;
       }
@@ -85,6 +91,7 @@ class MinesweeperBoard {
   victoryParty(){
     //tell the player they've won, do cool effects!
     console.log("The Player has won!");
+    this.drawNonInteractiveBoard();
   }
   revealBoard(){
     //view the board and reveal mines
@@ -163,6 +170,7 @@ class MinesweeperBoard {
           }
       }
       toUse += '</div>';
+      toUse += "<div class='mineMenuBar'></div>"
       document.getElementById("middleBox").innerHTML = toUse;
     }
     else if (this.size == 256){
@@ -193,10 +201,6 @@ class MinesweeperBoard {
     }
   }
 }
-// Testing
-function test() {
-  console.log("Hello.");
-}
 //Writers
 function writeToRulesBox(diff) {
   console.log(diff + " written");
@@ -212,7 +216,6 @@ function writeToRulesBox(diff) {
 function givenCustomMines(size, mines) {} ///WRITE MORE LATER - think of board correlations?
 function givenGameMinesweeper() {
   console.log("Minesweeper was selected.");
-  test();
   //convert buttons to difficulty buttons
   document.getElementById("middleBox").innerHTML =
     `

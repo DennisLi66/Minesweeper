@@ -8,9 +8,9 @@ body{
   /* bottom: 10%;
   right: 10%; */
   min-height: 650px;
+  max-height: 80%;
   min-width: 750px;
   max-width: 80%;
-  max-height: 80%;
   width: 80%;
   height: 80%;
   position: absolute;
@@ -23,7 +23,14 @@ body{
   text-align: center;
   position: relative;
 }
-
+.mineMenuBar{
+  width: 100%;
+  min-height: 100px;
+  max-height: 20%;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+}
 /* EASY BOARD DETAILS */
 .boardSweeperEZ{
   border: 1px solid black;
