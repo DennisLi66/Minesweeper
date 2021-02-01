@@ -37,7 +37,7 @@ class MinesweeperBoard {
       this.loserScreen();
     }
     else{// wow, not mine
-      if (mineboard[space] == 0){ //if zero, cascade
+      if (this.mineboard[space] == 0){ //if zero, cascade
         this.uncoverZeroes(space);
         this.drawBoard();
       }
@@ -139,6 +139,10 @@ class MinesweeperBoard {
           else if (visualBoard[i] == 2){//covered and marked
             toUse += "<div class='boardEZFlag' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
           }
+          else{
+            //has been uncovered
+            toUse += "<img src='mineImages/square" + this.mineboard[i] + ".png' alt='' class='square64'>";
+          }
       }
       toUse += '</div>';
       document.getElementById("middleBox").innerHTML = toUse;
@@ -151,7 +155,20 @@ class MinesweeperBoard {
     }
   }
   drawNonInteractiveBoard(){ //draw a board that shows up on game loss
-
+    if (this.size == 64){
+      let toUse = "<div class='boardSweeperEZ'>";
+      let visualBoard = this.getVisualBoard();
+      for (let i = 0; i < this.size; i++){
+          if (visualBoard[i] == 0){//covered and unmarked
+            toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          }
+          else if (visualBoard[i] == 2){//covered and marked
+            toUse += "<div class='boardEZFlag' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          }
+      }
+      toUse += '</div>';
+      document.getElementById("middleBox").innerHTML = toUse;
+    }
   }
 }
 // Testing
