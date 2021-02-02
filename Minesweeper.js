@@ -189,7 +189,30 @@ class MinesweeperBoard {
       document.getElementById("middleBox").innerHTML = toUse;
     }
     else if (this.size == 256){
-
+      let toUse = "<div class='boardSweeperEZ'>";
+      let visualBoard = this.getVisualBoard();
+      for (let i = 0; i < this.size; i++){
+          if (visualBoard[i] == 0){//covered and unmarked
+            toUse += "<div class='boardMEDSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          }
+          else if (visualBoard[i] == 2){//covered and marked
+            toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i +")' class='square256'>";
+          }
+          else{
+            //has been uncovered
+            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square256'>";
+          }
+      }
+      toUse += '</div>';
+      toUse +=
+      `
+      <div class = 'mineMenuBar'>
+      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
+      <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
+      </div>
+      `;
+      document.getElementById("middleBox").innerHTML = toUse;
     }
     else if (this.size == 484){
 
@@ -209,6 +232,32 @@ class MinesweeperBoard {
           else{
             //has been uncovered
             toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
+          }
+      }
+      toUse += '</div>';
+      toUse +=
+      `
+      <div class = 'mineMenuBar'>
+      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
+      <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
+      </div>
+      `;
+      document.getElementById("middleBox").innerHTML = toUse;
+    }
+    else if (this.size == 256){
+      let toUse = "<div class='boardSweeperEZ'>";
+      let visualBoard = this.getVisualBoard();
+      for (let i = 0; i < this.size; i++){
+          if (visualBoard[i] == 0){//covered and unmarked
+            toUse += "<div class='boardMEDSquare' id='block" + i + "' ></div>";
+          }
+          else if (visualBoard[i] == 2){//covered and marked
+            toUse += "<img src='mineImages/easy/flag.png'  class='square256'>";
+          }
+          else{
+            //has been uncovered
+            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square256'>";
           }
       }
       toUse += '</div>';
