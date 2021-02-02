@@ -207,7 +207,7 @@ class MinesweeperBoard {
       toUse +=
       `
       <div class = 'mineMenuBar'>
-      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
       </div>
@@ -238,7 +238,7 @@ class MinesweeperBoard {
       toUse +=
       `
       <div class = 'mineMenuBar'>
-      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
       </div>
@@ -264,7 +264,7 @@ class MinesweeperBoard {
       toUse +=
       `
       <div class = 'mineMenuBar'>
-      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
       </div>
@@ -358,11 +358,4 @@ function detectClick(event,id){
       window.gameBoard.drawBoard();
     }
   }
-}
-function retreatMainMenu(){
-  document.getElementById("middleBox").innerHTML =
-  `
-  <h1>What game would you like to play?</h1>
-  <button class="gameButtons" onclick="givenGameMinesweeper()">Minesweeper</button>
-  `;
 }
