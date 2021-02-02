@@ -22,11 +22,11 @@ body{
   width: 150px;
   text-align: center;
   position: relative;
+  bottom:0;
 }
 .mineMenuBar{
   width: 100%;
-  min-height: 100px;
-  max-height: 20%;
+  height: 30px;
   background-color: white;
   position: absolute;
   bottom: 0;
@@ -63,4 +63,21 @@ body{
   /* board  - 2 / 8   good number would be 590?*/
   width: 71px;
   height: 71px;
+}
+/* Quick Alerts */
+.victoryMineGreen{
+  background-color: green;
+  color: white;
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 20px;
+}
+.lossMineRed{
+  background-color: red;
+  color: white;
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 20px;
 }

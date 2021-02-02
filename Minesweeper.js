@@ -3,12 +3,8 @@
 
 // add visuals to the functions
 // play sounds on mark, on loss, on victory, on uncover
-// make screen red on loss?
 /// add adjustments for all difficulties
-// add victory
-//add restart button
 // add counter for mines and flags
-// return to main menu btn
 
 class MinesweeperBoard {
   constructor() {}
@@ -52,7 +48,7 @@ class MinesweeperBoard {
         this.mineCovered[space] = 1;     //convert it to visible
         this.drawBoard();
         if (this.isVictory()){
-          victoryParty();
+          this.victoryParty();
         }
       }
     }
@@ -91,7 +87,13 @@ class MinesweeperBoard {
   victoryParty(){
     //tell the player they've won, do cool effects!
     console.log("The Player has won!");
+    this.revealBoard();
     this.drawNonInteractiveBoard();
+    document.getElementById('middleBox').innerHTML =
+    `
+    <div class='victoryMineGreen'> Wow, you won! </div>
+    `
+    + document.getElementById('middleBox').innerHTML;
   }
   revealBoard(){
     //view the board and reveal mines
@@ -104,10 +106,16 @@ class MinesweeperBoard {
     //throw up loss banner
     this.revealBoard();
     this.drawNonInteractiveBoard();
+    document.getElementById('middleBox').innerHTML =
+    `
+    <div class='lossMineRed'> Saddening, you lose! </div>
+    `
+    + document.getElementById('middleBox').innerHTML;
   }
   generateBoard(l, w, m) {
     this.size = l * w;
     this.length = l;
+    this.mineCount = m;
     this.mineboard = []; // what the player sees if uncovered
     // 0 == blank, 1-8 numbers, 9 for mine
     this.mineCovered = []; //what the player sees
@@ -170,7 +178,14 @@ class MinesweeperBoard {
           }
       }
       toUse += '</div>';
-      toUse += "<div class='mineMenuBar'></div>"
+      toUse +=
+      `
+      <div class = 'mineMenuBar'>
+      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
+      <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
+      </div>
+      `;
       document.getElementById("middleBox").innerHTML = toUse;
     }
     else if (this.size == 256){
@@ -197,8 +212,21 @@ class MinesweeperBoard {
           }
       }
       toUse += '</div>';
+      toUse +=
+      `
+      <div class = 'mineMenuBar'>
+      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
+      <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
+      </div>
+      `;
       document.getElementById("middleBox").innerHTML = toUse;
     }
+  }
+  fastRestart(){
+    //generate a board again, then draw the board
+    this.generateBoard(this.length,this.length,this.mineCount);
+    this.drawBoard();
   }
 }
 //Writers
@@ -281,4 +309,11 @@ function detectClick(event,id){
       window.gameBoard.drawBoard();
     }
   }
+}
+function retreatMainMenu(){
+  document.getElementById("middleBox").innerHTML =
+  `
+  <h1>What game would you like to play?</h1>
+  <button class="gameButtons" onclick="givenGameMinesweeper()">Minesweeper</button>
+  `;
 }
