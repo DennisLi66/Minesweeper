@@ -64,15 +64,6 @@ body{
   height: 71px;
 }
 /* MEDIUM BOARD DETAILS */
-.boardSweeperMED{
-  border: 1px solid black;
-  background-color: beige;
-  height: 584px;
-  width: 584px;
-  margin: 0 auto;
-  top: 37px;
-  position: relative;
-}
 .boardMEDSquare{
   border: 1px solid black;
   background-color: gray;
@@ -89,6 +80,30 @@ body{
   height: 34.5px;
 }
 /* HARD BOARD DETAILS  */
+.boardSweeperHRD{
+  border: 1px solid black;
+  background-color: beige;
+  height: 660px;
+  width: 660px;
+  margin: 0 auto;
+  top: 37px;
+  position: relative;
+}
+.boardHRDSquare{
+  border: 1px solid black;
+  background-color: gray;
+  float:left;
+  /* board  - 2 / 8   good number would be 590?*/
+  width: 28px;
+  height: 28px;
+}
+.square484{
+  border: 1px solid black;
+  float:left;
+  /* board  - 2 / 8   good number would be 590?*/
+  width: 28px;
+  height: 28px;
+}
 /* Quick Alerts */
 .victoryMineGreen{
   background-color: green;

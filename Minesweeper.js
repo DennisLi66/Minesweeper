@@ -1,9 +1,7 @@
 //takes a length and width, and mine amount
 // Beginner 8x8 10, Medium 16x16 40, 22x22 99
 
-// add visuals to the functions
 // play sounds on mark, on loss, on victory, on uncover
-/// add adjustments for all difficulties
 // add counter for mines and flags
 
 class MinesweeperBoard {
@@ -181,7 +179,6 @@ class MinesweeperBoard {
       toUse +=
       `
       <div class = 'mineMenuBar'>
-      <button type="button" class='gameButtons' onclick="retreatMainMenu()">Main Menu</button>
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
       </div>
@@ -207,7 +204,6 @@ class MinesweeperBoard {
       toUse +=
       `
       <div class = 'mineMenuBar'>
-
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
       </div>
@@ -215,7 +211,29 @@ class MinesweeperBoard {
       document.getElementById("middleBox").innerHTML = toUse;
     }
     else if (this.size == 484){
-
+      let toUse = "<div class='boardSweeperHRD'>";
+      let visualBoard = this.getVisualBoard();
+      for (let i = 0; i < this.size; i++){
+          if (visualBoard[i] == 0){//covered and unmarked
+            toUse += "<div class='boardHRDSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
+          }
+          else if (visualBoard[i] == 2){//covered and marked
+            toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i +")' class='square484'>";
+          }
+          else{
+            //has been uncovered
+            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square484'>";
+          }
+      }
+      toUse += '</div>';
+      toUse +=
+      `
+      <div class = 'mineMenuBar'>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
+      <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
+      </div>
+      `;
+      document.getElementById("middleBox").innerHTML = toUse;
     }
   }
   drawNonInteractiveBoard(){ //draw a board that shows up on game loss
@@ -265,6 +283,31 @@ class MinesweeperBoard {
       `
       <div class = 'mineMenuBar'>
 
+      <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
+      <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
+      </div>
+      `;
+      document.getElementById("middleBox").innerHTML = toUse;
+    }
+    else if (this.size == 484){
+      let toUse = "<div class='boardSweeperHRD'>";
+      let visualBoard = this.getVisualBoard();
+      for (let i = 0; i < this.size; i++){
+          if (visualBoard[i] == 0){//covered and unmarked
+            toUse += "<div class='boardHRDSquare' id='block" + i + "' ></div>";
+          }
+          else if (visualBoard[i] == 2){//covered and marked
+            toUse += "<img src='mineImages/easy/flag.png'  class='square484'>";
+          }
+          else{
+            //has been uncovered
+            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square484'>";
+          }
+      }
+      toUse += '</div>';
+      toUse +=
+      `
+      <div class = 'mineMenuBar'>
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
       </div>
