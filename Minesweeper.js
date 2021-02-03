@@ -3,6 +3,7 @@
 
 // play sounds on mark, on loss, on victory, on uncover
 // add counter for mines and flags
+// add sound disabling
 
 class MinesweeperBoard {
   constructor() {}
@@ -33,6 +34,8 @@ class MinesweeperBoard {
     // edit the mines board to uncover the space, if the space wasn't already uncovered
     if (this.mineboard[space] == 9){// if mine
       this.mineCovered[space] = 1;     //convert it to visible
+      var audio = new Audio('pop.mp3');
+      audio.play();
       console.log("The Player has lost.");
       this.loserScreen();
     }
