@@ -114,6 +114,7 @@ class MinesweeperBoard {
     this.size = l * w;
     this.length = l;
     this.mineCount = m;
+    this.marked = 0;
     this.mineboard = []; // what the player sees if uncovered
     // 0 == blank, 1-8 numbers, 9 for mine
     this.mineCovered = []; //what the player sees
