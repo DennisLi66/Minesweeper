@@ -1,2 +1,2 @@
 # Games
-A website with an option to play at least Minesweeper and Snake on a website.
+A website with Minesweeper in three difficulties
