@@ -9,9 +9,10 @@
   <title> Game Page</title>
 </head>
 
-<body oncontextmenu="return false;">
+<body onload='makeGame()' oncontextmenu="return false;">
   <div class="middleBox" id="middleBox" >
-    <h1>What difficulty would you like to play?</h1>
+    <h1>Minesweeper</h1>
+    <h2>What difficulty would you like to play?</h2>
     <button type="button" class='gameButtons' onmouseover="writeToRulesBox(0)" onclick="givenDifficulty(0)">Easy</button> <br>
     <button type="button" class='gameButtons' onmouseover="writeToRulesBox(1)" onclick="givenDifficulty(1)">Medium</button><br>
     <button type="button" class='gameButtons' onmouseover="writeToRulesBox(2)" onclick="givenDifficulty(2)">Hard</button><br>

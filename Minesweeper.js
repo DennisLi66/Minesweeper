@@ -6,7 +6,9 @@
 // add sound disabling
 
 class MinesweeperBoard {
-  constructor() {}
+  constructor() {
+    this.sound = true;
+  }
   getMinesBoard() {
     return this.mineboard;
   }
@@ -17,6 +19,11 @@ class MinesweeperBoard {
     //place flag, if possible
     // 0 == covered, 1 == uncovered, 2 == marked;
     if (this.mineCovered[space] === 0) {
+      if (this.sound) {
+        var audio = new Audio('flagmark.mp3');
+        audio.play();
+      }
+      this.marked++;
       this.mineCovered[space] = 2;
       return true;
     }
@@ -25,6 +32,11 @@ class MinesweeperBoard {
   unmark(space) { //no visual
     //remove flag, if possible
     if (this.mineCovered[space] === 2) {
+      this.marked--;
+      if (this.sound) {
+        var audio = new Audio('flagunmark.mp3');
+        audio.play();
+      }
       this.mineCovered[space] = 0;
       return true;
     }
@@ -32,47 +44,71 @@ class MinesweeperBoard {
   }
   uncover(space) {
     // edit the mines board to uncover the space, if the space wasn't already uncovered
-    if (this.mineboard[space] == 9){// if mine
-      this.mineCovered[space] = 1;     //convert it to visible
-      var audio = new Audio('pop.mp3');
-      audio.play();
+    if (this.mineboard[space] == 9) { // if mine
+      this.mineCovered[space] = 1; //convert it to visible
+      if (this.sound) {
+        var audio = new Audio('pop.mp3');
+        audio.play();
+      }
       console.log("The Player has lost.");
       this.loserScreen();
-    }
-    else{// wow, not mine
-      if (this.mineboard[space] == 0){ //if zero, cascade
+    } else { // wow, not mine
+      if (this.mineboard[space] == 0) { //if zero, cascade
+        if (this.sound) {
+          var audio = new Audio('dig.mp3');
+          audio.play();
+        }
         this.uncoverZeroes(space);
         this.drawBoard();
-      }
-      else{ //if number, dont cascade
+      } else { //if number, dont cascade
         // don't do anything?
-        this.mineCovered[space] = 1;     //convert it to visible
+        if (this.sound) {
+          var audio = new Audio('dig.mp3');
+          audio.play();
+        }
+        this.mineCovered[space] = 1; //convert it to visible
         this.drawBoard();
-        if (this.isVictory()){
+        if (this.isVictory()) {
           this.victoryParty();
         }
       }
     }
   }
-  uncoverZeroes(i){
-    if (this.mineCovered[i] == 1){
+  uncoverZeroes(i) {
+    if (this.mineCovered[i] == 1) {
       return;
     }
     this.mineCovered[i] = 1;
-    if (this.mineboard[i] == 0){
+    if (this.mineboard[i] == 0) {
       let l = this.length;
       //hand it off to eight spaces around. copy from numbers
-      if ((i % l != 0) && (i >= l)){this.uncoverZeroes(i-l-1)}//top left
-      if (i >= l){this.uncoverZeroes(i-l)}//top
-      if ((i >= l) && (i % l != (l - 1))){this.uncoverZeroes(i-l+1)}//top right
-      if (i % l != 0){this.uncoverZeroes(i-1)}//left
-      if (i % l != (l - 1)){this.uncoverZeroes(i + 1)}//right
-      if ((i < (this.size - l) && (i % l != 0))){this.uncoverZeroes(i + l - 1)}//bottom left
-      if (i < (this.size - l)){this.uncoverZeroes(l + i)}//bottom
-      if ((i < (this.size - l)) && (i % l != (l - 1))){this.uncoverZeroes(l + i + 1)}//bottom right
+      if ((i % l != 0) && (i >= l)) {
+        this.uncoverZeroes(i - l - 1)
+      } //top left
+      if (i >= l) {
+        this.uncoverZeroes(i - l)
+      } //top
+      if ((i >= l) && (i % l != (l - 1))) {
+        this.uncoverZeroes(i - l + 1)
+      } //top right
+      if (i % l != 0) {
+        this.uncoverZeroes(i - 1)
+      } //left
+      if (i % l != (l - 1)) {
+        this.uncoverZeroes(i + 1)
+      } //right
+      if ((i < (this.size - l) && (i % l != 0))) {
+        this.uncoverZeroes(i + l - 1)
+      } //bottom left
+      if (i < (this.size - l)) {
+        this.uncoverZeroes(l + i)
+      } //bottom
+      if ((i < (this.size - l)) && (i % l != (l - 1))) {
+        this.uncoverZeroes(l + i + 1)
+      } //bottom right
     }
     this.drawBoard();
-    if (this.isVictory()){
+    if (this.isVictory()) {
       this.victoryParty();
     }
   }
@@ -85,33 +121,37 @@ class MinesweeperBoard {
     //return true if all other spaces revealed
     return true;
   }
-  victoryParty(){
+  victoryParty() {
     //tell the player they've won, do cool effects!
+    if (this.sound) {
+      var audio = new Audio('clapping.mp3');
+      audio.play();
+    }
     console.log("The Player has won!");
     this.revealBoard();
     this.drawNonInteractiveBoard();
     document.getElementById('middleBox').innerHTML =
-    `
+      `
     <div class='victoryMineGreen'> Wow, you won! </div>
-    `
-    + document.getElementById('middleBox').innerHTML;
+    ` +
+      document.getElementById('middleBox').innerHTML;
   }
-  revealBoard(){
+  revealBoard() {
     //view the board and reveal mines
-    for (let i = 0; i < this.size; i++){
+    for (let i = 0; i < this.size; i++) {
       this.mineCovered[i] = 1;
     }
   }
-  loserScreen(){
+  loserScreen() {
     //draw noninteractive board
     //throw up loss banner
     this.revealBoard();
     this.drawNonInteractiveBoard();
     document.getElementById('middleBox').innerHTML =
-    `
+      `
     <div class='lossMineRed'> Saddening, you lose! </div>
-    `
-    + document.getElementById('middleBox').innerHTML;
+    ` +
+      document.getElementById('middleBox').innerHTML;
   }
   generateBoard(l, w, m) {
     this.size = l * w;
@@ -142,21 +182,21 @@ class MinesweeperBoard {
     }
     this.convertBoardToNumbers();
   }
-  convertBoardToNumbers(){
+  convertBoardToNumbers() {
     //Once there are mines in our board, we can now convert the adjacent spaces to uncoverNumbers
     let l = this.length;
-    for (let i = 0; i < this.size; i++){
-      if (this.mineboard[i] == 9){} //skip, is mine
-      else{ // check each rule seperately for errors
+    for (let i = 0; i < this.size; i++) {
+      if (this.mineboard[i] == 9) {} //skip, is mine
+      else { // check each rule seperately for errors
         let mines = 0;
-        mines += ((i % l != 0) && (i >= l) && (this.mineboard[i  - l - 1] == 9) ? 1 : 0 );//top left
-        mines += ((i >= l) && (this.mineboard[i-l] == 9) ? 1 : 0);//top
-        mines += ((i >= l) && (i % l != (l - 1)) && (this.mineboard[i - l + 1] == 9) ? 1 : 0);//top right
-        mines += ((i % l != 0) && (this.mineboard[i-1] == 9) ? 1 : 0);//left
-        mines += ((i % l != (l - 1)) && (this.mineboard[i+1] == 9) ? 1 : 0);//right
-        mines += ( (i < (this.size - l)) && (i % l != 0) && (this.mineboard[i+l-1] == 9) ? 1: 0);//bottom left
-        mines += ( (i < (this.size - l)) && (this.mineboard [i + l] == 9) ? 1: 0);//bottom
-        mines += ( (i < (this.size - l)) && (i % l != (l - 1) ) && (this.mineboard [i + l + 1] == 9) ? 1: 0);//bottom right
+        mines += ((i % l != 0) && (i >= l) && (this.mineboard[i - l - 1] == 9) ? 1 : 0); //top left
+        mines += ((i >= l) && (this.mineboard[i - l] == 9) ? 1 : 0); //top
+        mines += ((i >= l) && (i % l != (l - 1)) && (this.mineboard[i - l + 1] == 9) ? 1 : 0); //top right
+        mines += ((i % l != 0) && (this.mineboard[i - 1] == 9) ? 1 : 0); //left
+        mines += ((i % l != (l - 1)) && (this.mineboard[i + 1] == 9) ? 1 : 0); //right
+        mines += ((i < (this.size - l)) && (i % l != 0) && (this.mineboard[i + l - 1] == 9) ? 1 : 0); //bottom left
+        mines += ((i < (this.size - l)) && (this.mineboard[i + l] == 9) ? 1 : 0); //bottom
+        mines += ((i < (this.size - l)) && (i % l != (l - 1)) && (this.mineboard[i + l + 1] == 9) ? 1 : 0); //bottom right
         this.mineboard[i] = mines;
       }
     }
@@ -164,170 +204,201 @@ class MinesweeperBoard {
   }
   drawBoard() { //draw  this.mineboard
     //console.log("Size: " + this.size);
-    if (this.size == 64){
+    if (this.size == 64) {
       let toUse = "<div class='boardSweeperEZ'>";
       let visualBoard = this.getVisualBoard();
-      for (let i = 0; i < this.size; i++){
-          if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
-          }
-          else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i +")' class='square64'>";
-          }
-          else{
-            //has been uncovered
-            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
-          }
+      for (let i = 0; i < this.size; i++) {
+        if (visualBoard[i] == 0) { //covered and unmarked
+          toUse += "<div class='boardEZSquare' id='block" + i + "' onmousedown='detectClick(event," + i + ")'></div>";
+        } else if (visualBoard[i] == 2) { //covered and marked
+          toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i + ")' class='square64'>";
+        } else {
+          //has been uncovered
+          toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
+        }
       }
       toUse += '</div>';
       toUse +=
-      `
+        `
       <div class = 'mineMenuBar'>
+      Mines:
+      ` + this.mineCount +
+        `
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
-      </div>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.toggleSound()">Toggle Sound</button>
+      Marks:
+      ` + this.marked +
+        `
+       </div>
       `;
       document.getElementById("middleBox").innerHTML = toUse;
-    }
-    else if (this.size == 256){
+    } else if (this.size == 256) {
       let toUse = "<div class='boardSweeperEZ'>";
       let visualBoard = this.getVisualBoard();
-      for (let i = 0; i < this.size; i++){
-          if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardMEDSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
-          }
-          else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i +")' class='square256'>";
-          }
-          else{
-            //has been uncovered
-            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square256'>";
-          }
+      for (let i = 0; i < this.size; i++) {
+        if (visualBoard[i] == 0) { //covered and unmarked
+          toUse += "<div class='boardMEDSquare' id='block" + i + "' onmousedown='detectClick(event," + i + ")'></div>";
+        } else if (visualBoard[i] == 2) { //covered and marked
+          toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i + ")' class='square256'>";
+        } else {
+          //has been uncovered
+          toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square256'>";
+        }
       }
       toUse += '</div>';
       toUse +=
-      `
+        `
       <div class = 'mineMenuBar'>
+      Mines:
+      ` + this.mineCount +
+        `
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
-      </div>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.toggleSound()">Toggle Sound</button>
+      Marks:
+      ` + this.marked +
+        `
+       </div>
       `;
       document.getElementById("middleBox").innerHTML = toUse;
-    }
-    else if (this.size == 484){
+    } else if (this.size == 484) {
       let toUse = "<div class='boardSweeperHRD'>";
       let visualBoard = this.getVisualBoard();
-      for (let i = 0; i < this.size; i++){
-          if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardHRDSquare' id='block" + i + "' onmousedown='detectClick(event," + i +")'></div>";
-          }
-          else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i +")' class='square484'>";
-          }
-          else{
-            //has been uncovered
-            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square484'>";
-          }
+      for (let i = 0; i < this.size; i++) {
+        if (visualBoard[i] == 0) { //covered and unmarked
+          toUse += "<div class='boardHRDSquare' id='block" + i + "' onmousedown='detectClick(event," + i + ")'></div>";
+        } else if (visualBoard[i] == 2) { //covered and marked
+          toUse += "<img src='mineImages/easy/flag.png' onmousedown='detectClick(event," + i + ")' class='square484'>";
+        } else {
+          //has been uncovered
+          toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square484'>";
+        }
       }
       toUse += '</div>';
       toUse +=
-      `
+        `
       <div class = 'mineMenuBar'>
+      Mines:
+      ` + this.mineCount +
+        `
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
-      </div>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.toggleSound()">Toggle Sound</button>
+      Marks:
+      ` + this.marked +
+        `
+       </div>
       `;
       document.getElementById("middleBox").innerHTML = toUse;
     }
   }
-  drawNonInteractiveBoard(){ //draw a board that shows up on game loss
-    if (this.size == 64){
+  drawNonInteractiveBoard() { //draw a board that shows up on game loss
+    if (this.size == 64) {
       let toUse = "<div class='boardSweeperEZ'>";
       let visualBoard = this.getVisualBoard();
-      for (let i = 0; i < this.size; i++){
-          if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardEZSquare' id='block" + i + "' ></div>";
-          }
-          else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<img src='mineImages/easy/flag.png' class='square64'>";
-          }
-          else{
-            //has been uncovered
-            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
-          }
+      for (let i = 0; i < this.size; i++) {
+        if (visualBoard[i] == 0) { //covered and unmarked
+          toUse += "<div class='boardEZSquare' id='block" + i + "' ></div>";
+        } else if (visualBoard[i] == 2) { //covered and marked
+          toUse += "<img src='mineImages/easy/flag.png' class='square64'>";
+        } else {
+          //has been uncovered
+          toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square64'>";
+        }
       }
       toUse += '</div>';
       toUse +=
-      `
+        `
       <div class = 'mineMenuBar'>
-
+      Mines:
+      ` + this.mineCount +
+        `
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
-      </div>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.toggleSound()">Toggle Sound</button>
+      Marks:
+      ` + this.marked +
+        `
+       </div>
       `;
       document.getElementById("middleBox").innerHTML = toUse;
-    }
-    else if (this.size == 256){
+    } else if (this.size == 256) {
       let toUse = "<div class='boardSweeperEZ'>";
       let visualBoard = this.getVisualBoard();
-      for (let i = 0; i < this.size; i++){
-          if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardMEDSquare' id='block" + i + "' ></div>";
-          }
-          else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<img src='mineImages/easy/flag.png'  class='square256'>";
-          }
-          else{
-            //has been uncovered
-            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square256'>";
-          }
+      for (let i = 0; i < this.size; i++) {
+        if (visualBoard[i] == 0) { //covered and unmarked
+          toUse += "<div class='boardMEDSquare' id='block" + i + "' ></div>";
+        } else if (visualBoard[i] == 2) { //covered and marked
+          toUse += "<img src='mineImages/easy/flag.png'  class='square256'>";
+        } else {
+          //has been uncovered
+          toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square256'>";
+        }
       }
       toUse += '</div>';
       toUse +=
-      `
+        `
       <div class = 'mineMenuBar'>
-
+      Mines:
+      ` + this.mineCount +
+        `
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
-      </div>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.toggleSound()">Toggle Sound</button>
+      Marks:
+      ` + this.marked +
+        `
+       </div>
       `;
       document.getElementById("middleBox").innerHTML = toUse;
-    }
-    else if (this.size == 484){
+    } else if (this.size == 484) {
       let toUse = "<div class='boardSweeperHRD'>";
       let visualBoard = this.getVisualBoard();
-      for (let i = 0; i < this.size; i++){
-          if (visualBoard[i] == 0){//covered and unmarked
-            toUse += "<div class='boardHRDSquare' id='block" + i + "' ></div>";
-          }
-          else if (visualBoard[i] == 2){//covered and marked
-            toUse += "<img src='mineImages/easy/flag.png'  class='square484'>";
-          }
-          else{
-            //has been uncovered
-            toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square484'>";
-          }
+      for (let i = 0; i < this.size; i++) {
+        if (visualBoard[i] == 0) { //covered and unmarked
+          toUse += "<div class='boardHRDSquare' id='block" + i + "' ></div>";
+        } else if (visualBoard[i] == 2) { //covered and marked
+          toUse += "<img src='mineImages/easy/flag.png'  class='square484'>";
+        } else {
+          //has been uncovered
+          toUse += "<img src='mineImages/easy/square" + this.mineboard[i] + ".png' class='square484'>";
+        }
       }
       toUse += '</div>';
       toUse +=
-      `
+        `
       <div class = 'mineMenuBar'>
+      Mines:
+      ` + this.mineCount +
+        `
       <button type="button" class='gameButtons' onclick="window.gameBoard.fastRestart()">Restart</button>
       <button type="button" class='gameButtons' onclick="givenGameMinesweeper()">Change Difficulty</button>
-      </div>
+      <button type="button" class='gameButtons' onclick="window.gameBoard.toggleSound()">Toggle Sound</button>
+      Marks:
+      ` + this.marked +
+        `
+       </div>
       `;
       document.getElementById("middleBox").innerHTML = toUse;
     }
   }
-  fastRestart(){
+  fastRestart() {
     //generate a board again, then draw the board
-    this.generateBoard(this.length,this.length,this.mineCount);
+    this.generateBoard(this.length, this.length, this.mineCount);
     this.drawBoard();
+  }
+  toggleSound() { //toggles the sound
+    if (this.sound) {
+      this.sound = false;
+    } else {
+      this.sound = true;
+    }
   }
 }
 //Writers
 function writeToRulesBox(diff) {
-  console.log(diff + " written");
+  //console.log(diff + " written");
   if (diff == 0) { //EZ
     document.getElementById('ruleText').innerHTML = "There will be an 8x8 board with 10 mines."
   } else if (diff == 1) { //Med
@@ -339,10 +410,11 @@ function writeToRulesBox(diff) {
 // Progression
 function givenCustomMines(size, mines) {} ///WRITE MORE LATER - think of board correlations?
 function givenGameMinesweeper() {
-  console.log("Minesweeper was selected.");
   //convert buttons to difficulty buttons
   document.getElementById("middleBox").innerHTML =
     `
+    <h1>Minesweeper</h1>
+    <h2>What difficulty would you like to play?</h2>
   <button type="button" class='gameButtons' onmouseover="writeToRulesBox(0)" onclick="givenDifficulty(0)">Easy</button> <br>
   <button type="button" class='gameButtons' onmouseover="writeToRulesBox(1)" onclick="givenDifficulty(1)">Medium</button><br>
   <button type="button" class='gameButtons' onmouseover="writeToRulesBox(2)" onclick="givenDifficulty(2)">Hard</button><br>
@@ -351,58 +423,52 @@ function givenGameMinesweeper() {
   `;
 }
 function givenDifficulty(diff) { //given the difficulty, create the board
-  console.log(diff + " chosen.")
-  window.gameBoard = new MinesweeperBoard();
+  // console.log(diff + " chosen.")
   if (diff == 0) { //EZ
-    window.difficulty = 0;
     window.gameBoard.generateBoard(8, 8, 10);
   } else if (diff == 1) { //MED
-    window.difficulty = 1;
     window.gameBoard.generateBoard(16, 16, 40);
   } else if (diff == 2) { //HARD
-    window.difficulty = 2;
     window.gameBoard.generateBoard(22, 22, 99);
   }
   window.gameBoard.drawBoard();
 }
-function detectClick(event,id){
+function detectClick(event, id) {
   //alert("You pressed button: " + event.button + " on " + id);
   // 0 is left click, 2 is right click
-  if (event.button == 0){
+  if (event.button == 0) {
     // alert("You pressed a left click on " + id);
     let visual = window.gameBoard.getVisualBoard()[id];
-    if (visual == 1){ //if already uncovered
+    if (visual == 1) { //if already uncovered
       console.log("Player tried to uncover an already uncovered space.");
       //add oof sound effect
-    }
-    else if (visual == 2){
+    } else if (visual == 2) {
       console.log("Player tried to uncover a space they had already marked.")
       // add oof sound effect
-    }
-    else{ //uncover
+    } else { //uncover
       console.log("Uncovering space: " + id);
       window.gameBoard.uncover(id);
     }
-  }
-  else if (event.button == 2){
+  } else if (event.button == 2) {
     //alert("You pressed a right click on " + id);
     //check if space is marked already
     let covered = window.gameBoard.getVisualBoard()[id];
-    if (covered == 0){ //covered - so mark it
+    if (covered == 0) { //covered - so mark it
       window.gameBoard.mark(id);
       //play positive ding sound
       console.log("Space " + id + " was marked.");
       window.gameBoard.drawBoard();
-    }
-    else if (covered == 1){ //uncovered - say it can't be marked? play an error sound? do nothing?
+    } else if (covered == 1) { //uncovered - say it can't be marked? play an error sound? do nothing?
       console.log("Player tried to mark tile " + id + ", but that tile was uncovered.")
       //play oof sound
-    }
-    else if (covered == 2){ //already marked - so unmark it
+    } else if (covered == 2) { //already marked - so unmark it
       window.gameBoard.unmark(id);
       //play positive ding sound?
       console.log("Space " + id + " was unmarked.");
       window.gameBoard.drawBoard();
     }
   }
+}
+function makeGame(){
+    window.gameBoard = new MinesweeperBoard();
 }
